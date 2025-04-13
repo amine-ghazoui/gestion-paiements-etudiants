@@ -27,6 +27,8 @@ public class EnsetSpgAngApplication {
     CommandLineRunner commandLineRunner(PaymentRepository paymentRepository, StudentRepository studentRepository) {
         return args -> {
 
+            // Créer des étudiants
+
             studentRepository.save(Student.builder().id(UUID.randomUUID().toString())
                     .firstName("Amine").lastName("ghazoui").code("D137579059")
                     .programId("SDIA").build());
@@ -40,18 +42,28 @@ public class EnsetSpgAngApplication {
                     .firstName("Fatima").lastName("Ait bahadou").code("S16089059")
                     .programId("EL").build());
 
+            // Créer des paiements pour chaque étudiant
+
+            // Créer un tableau de types de paiement(retourne une liste de tous les types de paiement)
             PaymentType[] paymentTypes = PaymentType.values();
             Random random = new Random();
+            //chercher tous les étudiants
             studentRepository.findAll().forEach(etu -> {
+                // pour chaque étudiant, on va faire une boucle pour créer les paiements (10 paiements par étudiant)
                 for (int i = 0; i < 10; i++) {
+                    //pour chaque i on va générer un index aléatoire (entre 0 et la taille du tableau de types de paiement)
                     int index = random.nextInt(paymentTypes.length);
                     Payment payment = Payment.builder()
+                            //générer un montant aléatoire entre 1000 et 20000
                             .amount(1000+(int)(Math.random()+20000))
+                            //choisir un type de paiement aléatoire
                             .type(paymentTypes[index])
+                            //choisir un status (par défaut on va choisir le status CREATED)
                             .status(PaymentStatus.CREATED)
                             .date(LocalDate.now())
                             .student(etu)
                             .build();
+                    paymentRepository.save(payment);
                 }
             });
         };
