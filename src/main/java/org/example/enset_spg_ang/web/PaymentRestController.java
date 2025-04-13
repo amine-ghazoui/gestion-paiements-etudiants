@@ -6,6 +6,7 @@ import org.example.enset_spg_ang.entities.PaymentType;
 import org.example.enset_spg_ang.entities.Student;
 import org.example.enset_spg_ang.repositories.PaymentRepository;
 import org.example.enset_spg_ang.repositories.StudentRepository;
+import org.example.enset_spg_ang.services.PaymentService;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -24,10 +25,12 @@ public class PaymentRestController {
 
     StudentRepository studentRepository;
     PaymentRepository paymentRepository;
+    PaymentService paymentService;
 
-    public PaymentRestController(StudentRepository studentRepository, PaymentRepository paymentRepository) {
+    public PaymentRestController(StudentRepository studentRepository, PaymentRepository paymentRepository, PaymentService paymentService) {
         this.studentRepository = studentRepository;
         this.paymentRepository = paymentRepository;
+        this.paymentService = paymentService;
     }
 
     // ensemble de méthode de consultations
@@ -74,10 +77,7 @@ public class PaymentRestController {
 
     @PostMapping("/payments/{id}")
     public Payment updatePaymentStatus(@RequestParam PaymentStatus status,@PathVariable Long id) {
-        Payment payment = paymentRepository.findById(id).get();
-        payment.setStatus(status);
-
-        return paymentRepository.save(payment);
+        return paymentService.updatePaymentStatus(status, id);
     }
 
     // Ce point de terminaison accepte les requêtes POST envoyées à l'URL "/payments".
@@ -87,41 +87,7 @@ public class PaymentRestController {
 
     public Payment savePayment(@RequestParam MultipartFile file, LocalDate date,
                                double amount, PaymentType type, String studentCode) throws IOException {
-        // La méthode prend en entrée un fichier (MultipartFile), une date, un montant, un type de paiement,
-        // et un code étudiant. Elle retourne un objet Payment après l'avoir sauvegardé.
-
-        Path folderPath = Paths.get(System.getProperty("user.home"),  "enset-data", "payments");
-        // Définit le chemin du dossier où les fichiers seront stockés, dans le répertoire utilisateur.
-
-        if (!Files.exists(folderPath)) {
-            Files.createDirectories(folderPath);
-            // Si le dossier n'existe pas, il est créé.
-        }
-
-        String fileName = UUID.randomUUID().toString();
-        // Génère un nom de fichier unique en utilisant un UUID.
-
-        Path filePath = Paths.get(System.getProperty("user.home"),  "enset-data", "payments", fileName+".pdf");
-        // Définit le chemin complet du fichier, avec l'extension ".pdf".
-
-        Files.copy(file.getInputStream(), filePath);
-        // Copie le contenu du fichier téléchargé dans le chemin défini.
-
-        Student student = studentRepository.findByCode(studentCode);
-        // Recherche l'étudiant correspondant au code fourni dans la base de données.
-
-        Payment payment = Payment.builder()
-                .date(date) // Définit la date du paiement.
-                .type(type) // Définit le type de paiement.
-                .student(student) // Associe le paiement à l'étudiant trouvé.
-                .amount(amount) // Définit le montant du paiement.
-                .file(filePath.toUri().toString()) // Enregistre le chemin du fichier en tant qu'URI.
-                .status(PaymentStatus.CREATED) // Définit le statut du paiement comme "CREATED".
-                .build();
-        // Construit un objet Payment avec les informations fournies.
-
-        return paymentRepository.save(payment);
-        // Sauvegarde l'objet Payment dans la base de données et le retourne.
+        return paymentService.savePayment(file, date, amount, type, studentCode);
     }
 
 
@@ -131,13 +97,7 @@ public class PaymentRestController {
     @GetMapping(value = "/paymentFile/{paymentId}", produces = MediaType.APPLICATION_PDF_VALUE)
     public byte[] getPaymentFile(@PathVariable Long paymentId) throws IOException {
 
-        // Recherche le paiement dans la base de données à partir de l'identifiant donné dans l'URL.
-        // Attention : .get() suppose que le paiement existe. Sinon, cela lèvera une exception.
-        Payment payment = paymentRepository.findById(paymentId).get();
-
-        // Récupère le chemin du fichier PDF depuis l'objet Payment, puis lit tout son contenu en mémoire.
-        // Le fichier est lu sous forme de tableau de bytes pour être retourné dans la réponse.
-        return Files.readAllBytes(Path.of(URI.create(payment.getFile())));
+       return paymentService.getPaymentFile(paymentId);
     }
 
 
