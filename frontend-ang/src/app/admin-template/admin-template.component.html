@@ -1,5 +1,5 @@
 <mat-toolbar color="warn">
-  <button mat-icon-button>
+  <button mat-icon-button (click)="myDrawer.toggle()">
     <mat-icon>menu</mat-icon>
   </button>
   <span style="flex:auto"></span>
@@ -10,14 +10,14 @@
     Import
   </button>
   <mat-menu #importMenu>
-    <button mat-menu-item routerLink="/load-students">Load Students</button>
-    <button mat-menu-item routerLink="/load-payments">Load Payments</button>
+    <button mat-menu-item routerLink="/loadStudents">Load Students</button>
+    <button mat-menu-item routerLink="/loadPayments">Load Payments</button>
   </mat-menu>
   <button mat-raised-button color="primary" routerLink="/logout">Logout</button>
 </mat-toolbar>
 
 <mat-drawer-container>
-  <mat-drawer opened="true" mode="side" position="start">
+  <mat-drawer #myDrawer opened="true" mode="side" position="start">
     <mat-list>
       <mat-list-item>
         <button mat-button routerLink="/dashboard">
@@ -27,7 +27,7 @@
       </mat-list-item>
       <mat-list-item>
         <button mat-button routerLink="/students">
-          <mat-icon>dashboard</mat-icon>
+          <mat-icon>person</mat-icon>
           Students
         </button>
       </mat-list-item>
