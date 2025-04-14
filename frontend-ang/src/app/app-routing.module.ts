@@ -8,17 +8,21 @@ import {LoadPaymentsComponent} from './load-payments/load-payments.component';
 import {DashboardComponent} from './dashboard/dashboard.component';
 import {StudentsComponent} from './students/students.component';
 import {PaymentsComponent} from './payments/payments.component';
+import {AdminTemplateComponent} from './admin-template/admin-template.component';
 
 const routes: Routes = [
   {path : "", component : LoginComponent},
   {path : "login", component : LoginComponent},
-  {path : "home", component : HomeComponent},
-  {path : "profile", component : ProfileComponent},
-  {path : "loadStudents", component : LoadStudentsComponent},
-  {path : "loadPayments", component : LoadPaymentsComponent},
-  {path : "dashboard", component : DashboardComponent},
-  {path : "students", component : StudentsComponent},
-  {path : "payments", component : PaymentsComponent},
+  {path : "admin", component : AdminTemplateComponent, children : [
+      {path : "home", component : HomeComponent},
+      {path : "profile", component : ProfileComponent},
+      {path : "loadStudents", component : LoadStudentsComponent},
+      {path : "loadPayments", component : LoadPaymentsComponent},
+      {path : "dashboard", component : DashboardComponent},
+      {path : "students", component : StudentsComponent},
+      {path : "payments", component : PaymentsComponent},
+    ]},
+
 ];
 
 @NgModule({

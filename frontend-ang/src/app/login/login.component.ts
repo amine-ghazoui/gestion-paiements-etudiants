@@ -1,5 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup} from '@angular/forms';
+import {AuthService} from '../servives/auth.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -13,7 +15,9 @@ export class LoginComponent implements OnInit{
   public loginForm! : FormGroup;
 
   // Injection du service FormBuilder pour la gestion des formulaires
-  constructor(private fb : FormBuilder) {
+  constructor(private fb : FormBuilder
+              ,private authService : AuthService
+              ,private router : Router) {
   }
 
   // Méthode appelée lors de l'initialisation du composant
@@ -29,5 +33,11 @@ export class LoginComponent implements OnInit{
   login() {
     let username = this.loginForm.value.username;
     let password = this.loginForm.value.password;
+
+    let auth:boolean = this.authService.login(username, password);
+
+    if (auth == true){
+      this.router.navigateByUrl("/admin");
+    }
   }
 }
