@@ -25,7 +25,7 @@ import {ReactiveFormsModule} from '@angular/forms';
 import {provideAnimations} from '@angular/platform-browser/animations';
 import {AuthGuard} from './guards/auth.guard';
 import {AuthorizationGuard} from './guards/authorization.guard';
-
+import {HttpClientModule} from '@angular/common/http';
 @NgModule({
   declarations: [
     AppComponent,
@@ -52,7 +52,8 @@ import {AuthorizationGuard} from './guards/authorization.guard';
     MatFormFieldModule,
     MatInputModule,
     //pour récupérer les données du formulaire
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    HttpClientModule
   ],
   providers: [
     provideAnimations(), AuthGuard, AuthorizationGuard
