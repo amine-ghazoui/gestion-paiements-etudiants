@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import {Route, Router} from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -16,9 +17,9 @@ export class AuthService {
   public isAuthenticated : boolean = false;
   public roles : string[] = [];
 
-  constructor() { }
+  constructor(private router : Router) { }
 
-  public login(username : string, password : string) {
+  public login(username : string, password : string) : boolean {
     // Vérification des informations d'identification de l'utilisateur
     if(this.users[username] && this.users[username]['password'] == password){
 
@@ -33,4 +34,10 @@ export class AuthService {
   }
 
 
+  logout() {
+    this.isAuthenticated = false;
+    this.roles = [];
+    this.username = undefined;
+    this.router.navigateByUrl('/login');
+  }
 }

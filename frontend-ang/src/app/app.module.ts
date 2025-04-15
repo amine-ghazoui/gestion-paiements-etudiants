@@ -22,6 +22,9 @@ import {MatCard, MatCardModule} from '@angular/material/card';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInput, MatInputModule} from '@angular/material/input';
 import {ReactiveFormsModule} from '@angular/forms';
+import {provideAnimations} from '@angular/platform-browser/animations';
+import {AuthGuard} from './guards/auth.guard';
+import {AuthorizationGuard} from './guards/authorization.guard';
 
 @NgModule({
   declarations: [
@@ -51,7 +54,9 @@ import {ReactiveFormsModule} from '@angular/forms';
     //pour récupérer les données du formulaire
     ReactiveFormsModule
   ],
-  providers: [],
+  providers: [
+    provideAnimations(), AuthGuard, AuthorizationGuard
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

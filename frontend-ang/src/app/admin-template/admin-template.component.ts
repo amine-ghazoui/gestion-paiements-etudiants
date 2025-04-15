@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import {AuthService} from '../servives/auth.service';
 
 @Component({
   selector: 'app-admin-template',
@@ -8,4 +9,10 @@ import { Component } from '@angular/core';
 })
 export class AdminTemplateComponent {
 
+  constructor(public authService: AuthService) {
+  }
+
+  logout() {
+    this.authService.logout();
+  }
 }
