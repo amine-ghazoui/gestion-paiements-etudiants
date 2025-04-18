@@ -26,6 +26,7 @@ import {provideAnimations} from '@angular/platform-browser/animations';
 import {AuthGuard} from './guards/auth.guard';
 import {AuthorizationGuard} from './guards/authorization.guard';
 import {HttpClientModule} from '@angular/common/http';
+import {MatTable, MatTableModule} from '@angular/material/table';
 @NgModule({
   declarations: [
     AppComponent,
@@ -53,7 +54,8 @@ import {HttpClientModule} from '@angular/common/http';
     MatInputModule,
     //pour récupérer les données du formulaire
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    MatTableModule
   ],
   providers: [
     provideAnimations(), AuthGuard, AuthorizationGuard

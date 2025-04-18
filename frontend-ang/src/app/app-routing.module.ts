@@ -43,3 +43,14 @@ data : {roles : ['ADMIN']} : cettez les rôles requis pour accéder à cette rou
 canActivate : [AuthorizationGuard] : cette route est protégée par le AuthorizationGuard (c-est-à-dire que l'utilisateur doit être authentifié et avoir le rôle requis pour y accéder).
 canActivate : [AuthGuard] : cette route est protégée par le AuthGuard (c-est-à-dire que l'utilisateur doit être authentifié pour y accéder).
  */
+
+/*
+
+Angular propose d'autres types de guards selon les besoins :
+
+CanActivateChild → pour protéger les routes enfants.
+
+CanLoad → pour empêcher le chargement d’un module.
+
+CanDeactivate → pour empêcher de quitter un composant sans confirmation.
+ */
