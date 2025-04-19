@@ -55,7 +55,7 @@ public class EnsetSpgAngApplication {
                     int index = random.nextInt(paymentTypes.length);
                     Payment payment = Payment.builder()
                             //générer un montant aléatoire entre 1000 et 20000
-                            .amount(1000+(int)(Math.random()+20000))
+                            .amount(1000+(int)(Math.random()*20000))
                             //choisir un type de paiement aléatoire
                             .type(paymentTypes[index])
                             //choisir un status (par défaut on va choisir le status CREATED)

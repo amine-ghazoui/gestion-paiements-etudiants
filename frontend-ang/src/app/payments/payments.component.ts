@@ -2,6 +2,7 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {MatTableDataSource} from '@angular/material/table';
 import {MatPaginator} from '@angular/material/paginator';
+import {MatSort} from '@angular/material/sort';
 
 @Component({
   selector: 'app-payments',
@@ -21,6 +22,7 @@ export class PaymentsComponent implements OnInit {
    après, je vais l'affecter à la variable paginator
    */
   @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
 
   // Injection du service HttpClient pour effectuer des requêtes HTTP
   constructor(private http: HttpClient) {}
@@ -36,6 +38,7 @@ export class PaymentsComponent implements OnInit {
           this.payments = data;
           this.dataSource = new MatTableDataSource(this.payments);
           this.dataSource.paginator = this.paginator;
+          this.dataSource.sort = this.sort;
         },
         // error : méthode appelée lorsque la requête échoue
         error: err => {
