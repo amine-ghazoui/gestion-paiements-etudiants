@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-// de côté backend, j'autorise tous les domaines de faire appel à ce service
+// de côté backend, j'autorise tous les domaines de faire appel à ces services
 @CrossOrigin("*")
 public class PaymentRestController {
 

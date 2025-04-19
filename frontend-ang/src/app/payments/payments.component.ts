@@ -1,39 +1,46 @@
-import {Component, OnInit} from '@angular/core';
-import {HttpClient, HttpClientModule} from '@angular/common/http';
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
 import {MatTableDataSource} from '@angular/material/table';
+import {MatPaginator} from '@angular/material/paginator';
 
 @Component({
   selector: 'app-payments',
   standalone: false,
   templateUrl: './payments.component.html',
-  styleUrl: './payments.component.css'
+  styleUrls: ['./payments.component.css']
 })
-export class PaymentsComponent implements OnInit{
+export class PaymentsComponent implements OnInit {
 
-  public payments : any;
-  public dataSource : any;
-  public displayedColumns : string[] = ['id', 'date', 'amount', 'type', 'status','firstName'];
+  public payments: any;
+  public dataSource: any;
+  public displayedColumns: string[] = ['id', 'date', 'amount', 'type', 'status', 'firstName'];
+
+  // ! : signifie que la variable est initialisée plus tard
+  /*
+  c.-à-d. : je veux chercher dans la partie HTML un objet de type MatPaginator,
+   après, je vais l'affecter à la variable paginator
+   */
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+
   // Injection du service HttpClient pour effectuer des requêtes HTTP
-  constructor(private http : HttpClient) {
-  }
+  constructor(private http: HttpClient) {}
 
   ngOnInit(): void {
     // Appel de l'API pour récupérer les paiements (envoyer une requête vers le backend)
     this.http.get("http://localhost:8021/payments")
 
-      // la méthode subscribe permet d'écouter les réponses de l'API
+      // La méthode subscribe permet d'écouter les réponses de l'API
       .subscribe({
-        //next c'est la méthode qui est appelée lorsque la requête réussit
-        next : data => {
+        // next : méthode appelée lorsque la requête réussit
+        next: data => {
           this.payments = data;
-          this.dataSource = new MatTableDataSource(this.payments)
+          this.dataSource = new MatTableDataSource(this.payments);
+          this.dataSource.paginator = this.paginator;
         },
-        //error c'est la méthode qui est appelée lorsque la requête échoue
-        error : err => {
+        // error : méthode appelée lorsque la requête échoue
+        error: err => {
           console.log(err);
         }
-      })
+      });
   }
-
 }
-

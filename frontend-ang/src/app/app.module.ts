@@ -27,6 +27,7 @@ import {AuthGuard} from './guards/auth.guard';
 import {AuthorizationGuard} from './guards/authorization.guard';
 import {HttpClientModule} from '@angular/common/http';
 import {MatTable, MatTableModule} from '@angular/material/table';
+import {MatPaginatorModule} from '@angular/material/paginator';
 @NgModule({
   declarations: [
     AppComponent,
@@ -55,7 +56,8 @@ import {MatTable, MatTableModule} from '@angular/material/table';
     //pour récupérer les données du formulaire
     ReactiveFormsModule,
     HttpClientModule,
-    MatTableModule
+    MatTableModule,
+    MatPaginatorModule
   ],
   providers: [
     provideAnimations(), AuthGuard, AuthorizationGuard
